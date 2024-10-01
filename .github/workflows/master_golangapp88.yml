@@ -19,14 +19,17 @@ jobs:
           java-version: '11'
           distribution: 'microsoft'
 
-      # Add step to list directory contents for debugging
-      - name: List directory contents
+      # Add step to list directory contents to identify where pom.xml is located
+      - name: List directory contents at root
         run: ls -la
 
-      # Specify the working directory if pom.xml is in a subdirectory
+      - name: List contents of all subdirectories
+        run: find . -type d -exec ls -la {} \;
+
+      # Build with Maven (remove working-directory if pom.xml is in root)
       - name: Build with Maven
         run: mvn clean install
-        working-directory: ./path/to/your/project # Update this path if needed
+        #working-directory: ./path/to/your/project  # Uncomment and update only if needed
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
